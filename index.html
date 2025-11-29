@@ -1,73 +1,213 @@
-<!doctype html>
-<div class="mt-6"><a class="inline-block px-4 py-2 rounded-lg glass font-medium" href="#contact">Contact sales</a></div>
-</div>
-</div>
-</section>
-
-
-<!-- CTA -->
-<section id="get" class="max-w-7xl mx-auto px-6 py-12">
-<div class="glass p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6">
-<div>
-<h3 class="text-xl font-bold">Ready to orchestrate at scale?</h3>
-<p class="text-slate-300 mt-2">Start a free trial, run a proof of concept, or book a deep-dive with our solutions engineers.</p>
-</div>
-<div class="flex gap-3">
-<a class="px-5 py-3 rounded-lg bg-gradient-to-r from-[#7C3AED] to-[#6EE7B7] font-semibold text-black" href="#">Start free trial</a>
-<a class="px-5 py-3 rounded-lg glass" href="#contact">Book demo</a>
-</div>
-</div>
-</section>
-
-
-<!-- Contact / Footer -->
-<footer id="contact" class="max-w-7xl mx-auto px-6 py-12 text-slate-400">
-<div class="grid md:grid-cols-2 gap-8">
-<div>
-<h4 class="text-lg font-semibold text-white">Sysma</h4>
-<p class="mt-3">Email: <a href="mailto:sales@sysma.example" class="text-slate-200 underline">sales@sysma.example</a></p>
-<p class="mt-2 text-sm">© Sysma Inc. All rights reserved.</p>
-</div>
-<div>
-<form class="glass p-6 rounded-2xl" onsubmit="return false">
-<label class="block text-xs text-slate-300">Request a demo</label>
-<input class="mt-2 w-full p-3 rounded-lg bg-transparent border border-white/6" placeholder="Your email" />
-<textarea class="mt-3 w-full p-3 rounded-lg bg-transparent border border-white/6" rows="3" placeholder="Tell us about your fleet"></textarea>
-<div class="mt-3 flex justify-end">
-<button class="px-4 py-2 rounded-lg bg-gradient-to-r from-[#7C3AED] to-[#6EE7B7] font-semibold text-black">Request demo</button>
-</div>
-</form>
-</div>
-</div>
-</footer>
-</main>
-
-
-<script>
-// Simple particle background — lightweight and subtle
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-let w, h, particles = [];
-function resize(){w = canvas.width = innerWidth; h = canvas.height = innerHeight}
-window.addEventListener('resize', resize, {passive:true}); resize();
-
-
-function rand(min,max){return Math.random()*(max-min)+min}
-function makeParticles(n){particles = []; for(let i=0;i<n;i++){particles.push({x:rand(0,w), y:rand(0,h), r:rand(0.6,2.4), vx:rand(-0.2,0.2), vy:rand(-0.05,0.05), hue:rand(240,320)})}}
-makeParticles(Math.round((w*h)/80000));
-
-
-function step(){ctx.clearRect(0,0,w,h);
-for(const p of particles){p.x += p.vx; p.y += p.vy; if(p.x< -10) p.x = w+10; if(p.x> w+10) p.x=-10; if(p.y< -10) p.y = h+10; if(p.y> h+10) p.y=-10;
-ctx.beginPath(); ctx.fillStyle = `hsla(${p.hue},80%,65%,${0.08})`; ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
-}
-requestAnimationFrame(step);
-}
-step();
-
-
-// tiny UI flourish: copy deploy snippet
-document.addEventListener('click', e=>{const t = e.target; if(t.dataset.copy){const code = document.querySelector('.code-block code').innerText; navigator.clipboard?.writeText(code).then(()=>{t.innerText='Copied'; setTimeout(()=>t.innerText='Copy',1200)})}})
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sysma</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: white;
+            margin: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(to bottom, #00698f, #00497c);
+            padding: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+            width: 100%;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .header p {
+            font-size: 18px;
+        }
+        .nav {
+            background-color: #444;
+            padding: 10px;
+            text-align: center;
+        }
+        .nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .nav li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+        }
+        .nav a:hover {
+            color: #ccc;
+        }
+        .plans {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+        }
+        .plan {
+            background: #444;
+            margin: 0 20px;
+            padding: 20px;
+            border-radius: 10px;
+            width: calc(33.3% - 40px);
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .plan h3 {
+            margin-top: 0;
+        }
+        .plan ul {
+            padding: 0;
+            list-style: none;
+        }
+        .plan li {
+            margin-bottom: 10px;
+        }
+        .plan button {
+            background: #00698f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .plan button:hover {
+            background: #00497c;
+        }
+        .versions {
+            margin-top: 60px;
+        }
+        .version {
+            background: #555;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+        .version h3 {
+            margin-top: 0;
+        }
+        .version ul {
+            padding: 0;
+            list-style: none;
+        }
+        .version li {
+            margin-bottom: 10px;
+        }
+        @media (max-width: 768px) {
+            .plans {
+                flex-direction: column;
+                align-items: center;
+            }
+            .plan {
+                width: 100%;
+                margin: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Welkom bij Sysma</h1>
+        <p>De ultieme oplossing voor uw voorraad</p>
+    </div>
+    <div class="nav">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Prijzen</a></li>
+            <li><a href="#">Functies</a></li>
+            <li><a href="#">Ondersteuning</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <h2 style="margin-top: 40px; text-align: center;">Prijzen en opties</h2>
+        <div class="plans">
+            <div class="plan">
+                <h3>Basis</h3>
+                <p>€9.99/maand</p>
+                <ul>
+                    <li>- In- en uitscannen</li>
+                    <li>- Voorraad beheer</li>
+                    <li>- 150 producten</li>
+		    <li>- Rapporten inzien</li>
+                </ul>
+                <button>Contact opnemen</button>
+            </div>
+            <div class="plan" style="background: #555;">
+                <h3>Premium</h3>
+                <p>€19.99/maand</p>
+                <ul>
+                    <li>- Alle Basis functionaliteiten</li>
+                    <li>- Maandelijkse database backups</li>
+                    <li>- 1000 producten</li>
+                    <li>- Support binnen 4 uur reactie</li>
+		    <li>- Dymo labels printen</li>
+                </ul>
+                <button>Contact opnemen</button>
+            </div>
+            <div class="plan">
+                <h3>Enterprise</h3>
+                <p>€29.99/maand</p>
+                <ul>
+                    <li>- Alle Premium functionaliteiten</li>
+                    <li>- Dagelijkse database backups</li>
+		    <li>- Cloud backups</li>
+		    <li>- Onbeperkte producten</li>
+                    <li>- Post-quantum security</li>
+		    <li>- Rapporten exporteren als PDF</li>
+		    <li>- Meldingen bij lage voorraad</li>
+                </ul>
+                <button>Contact opnemen</button>
+            </div>
+        </div>
+        <h2 class="versions" style="text-align: center;">Versies</h2>
+	<div class="version">
+            <h3>V16.0.14 (in ontwikkeling)</h3>
+            <p><strong>Geplande release datum:</strong> 15 december 2025</p>
+            <ul>
+                <li>- 2 Typfouten in de Producten pagina verbeterd</li>
+                <li>- Mogelijkheid om de kolom volgorde in te stellen</li>
+                <li>- Mogelijkheid om kolommen te verbergen</li>
+            </ul>
+        </div>
+	<div class="version">
+            <h3>V16.0.13</h3>
+            <p><strong>Release datum:</strong> 7 november 2025</p>
+            <ul>
+                <li>- De 'Terug' knop weg gehaald bij de 'Nieuw' pagina</li>
+                <li>- Instellingen pagina toegevoegd</li>
+                <li>- Globale instellingen gaan vanaf nu via de instellingen pagina, de per pagina instellingen blijven</li>
+		<li>- Het pijltje veranderd nu bij het inklappen en uitklappen van paginas</li>
+            </ul>
+	    <p><strong>Bekende bugs</strong></p>
+            <ul>
+                <li>- Het variabel veld 'Merk' kan tijdelijk niet worden aangepast</li>
+            </ul>
+        </div>
+        <div class="version">
+            <h3>V16.0.12</h3>
+            <p><strong>Release datum:</strong> 31 oktober 2025</p>
+            <ul>
+                <li>- Maat, Kleur, Zool, Advies prijs, Doelgroep en Merk zijn nu variabel en kunnen worden aangepast</li>
+            </ul>
+	    <p><strong>Bekende bugs</strong></p>
+            <ul>
+                <li>- Het wijzigen van variabel veld 9 (nu Merk) is alleen mogelijk via de 'Product details' en 'Omzet' paginas</li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
