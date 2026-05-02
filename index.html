@@ -3,211 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sysma</title>
+    <title>NEON DODGE: SURVIVAL</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #333;
-            color: white;
             margin: 0;
-        }
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
-        }
-        .header {
-            background: linear-gradient(to bottom, #00698f, #00497c);
-            padding: 20px 0;
-            border-radius: 10px;
-            text-align: center;
-            width: 100%;
-        }
-        .header h1 {
-            margin: 0;
-        }
-        .header p {
-            font-size: 18px;
-        }
-        .nav {
-            background-color: #444;
-            padding: 10px;
-            text-align: center;
-        }
-        .nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .nav li {
-            display: inline-block;
-            margin-right: 20px;
-        }
-        .nav a {
-            color: white;
-            text-decoration: none;
-        }
-        .nav a:hover {
-            color: #ccc;
-        }
-        .plans {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 40px;
-        }
-        .plan {
-            background: #444;
-            margin: 0 20px;
-            padding: 20px;
-            border-radius: 10px;
-            width: calc(33.3% - 40px);
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            background-color: #050505;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
+            height: 100vh;
         }
-        .plan h3 {
-            margin-top: 0;
+
+        canvas {
+            border: 3px solid #00f2ff;
+            background: #000;
+            box-shadow: 0 0 30px #00f2ff33;
+            cursor: none;
         }
-        .plan ul {
-            padding: 0;
-            list-style: none;
+
+        #ui {
+            position: absolute;
+            top: 20px;
+            display: flex;
+            gap: 40px;
+            pointer-events: none;
+            width: 90%;
+            justify-content: center;
+            z-index: 5;
         }
-        .plan li {
-            margin-bottom: 10px;
+
+        .stat {
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00f2ff;
         }
-        .plan button {
-            background: #00698f;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
+
+        .lives-container { color: #00ff88; text-shadow: 0 0 10px #00ff88; }
+        .score-container { color: #00f2ff; }
+
+        #msg {
+            position: absolute;
+            text-align: center;
+            display: none;
+            background: rgba(0,0,0,0.9);
+            padding: 40px;
+            border: 2px solid #ff0055;
+            box-shadow: 0 0 50px #ff0055;
+            z-index: 10;
         }
-        .plan button:hover {
-            background: #00497c;
-        }
-        .versions {
-            margin-top: 60px;
-        }
-        .version {
-            background: #555;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-        }
-        .version h3 {
-            margin-top: 0;
-        }
-        .version ul {
-            padding: 0;
-            list-style: none;
-        }
-        .version li {
-            margin-bottom: 10px;
-        }
-        @media (max-width: 768px) {
-            .plans {
-                flex-direction: column;
-                align-items: center;
-            }
-            .plan {
-                width: 100%;
-                margin: 20px 0;
-            }
-        }
+
+        h1 { font-size: 60px; color: #ff0055; margin: 0; text-shadow: 0 0 20px #ff0055; }
+        p { font-size: 20px; color: #00ff88; margin: 20px 0; }
+        .btn { color: white; border: 1px solid white; padding: 10px; display: inline-block; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Welkom bij Sysma</h1>
-        <p>De ultieme oplossing voor uw voorraad</p>
+
+    <div id="ui">
+        <div class="stat score-container">SCORE: <span id="scoreVal">0</span></div>
+        <div class="stat lives-container">LIVES: <span id="livesVal">3</span></div>
+        <div class="stat">BEST: <span id="bestVal">0</span></div>
     </div>
-    <div class="nav">
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Prijzen</a></li>
-            <li><a href="#">Functies</a></li>
-            <li><a href="#">Ondersteuning</a></li>
-        </ul>
+
+    <div id="msg">
+        <h1 id="status">DEFEATED</h1>
+        <p id="reason"></p>
+        <div class="btn">CLICK TO REBOOT</div>
     </div>
-    <div class="container">
-        <h2 style="margin-top: 40px; text-align: center;">Prijzen en opties</h2>
-        <div class="plans">
-            <div class="plan">
-                <h3>Basis</h3>
-                <p>€9.99/maand</p>
-                <ul>
-                    <li>- In- en uitscannen</li>
-                    <li>- Voorraad beheer</li>
-                    <li>- 150 producten</li>
-		    <li>- Rapporten inzien</li>
-                </ul>
-                <button>Contact opnemen</button>
-            </div>
-            <div class="plan" style="background: #555;">
-                <h3>Premium</h3>
-                <p>€19.99/maand</p>
-                <ul>
-                    <li>- Alle Basis functionaliteiten</li>
-                    <li>- Maandelijkse database backups</li>
-                    <li>- 1000 producten</li>
-                    <li>- Support binnen 4 uur reactie</li>
-		    <li>- Dymo labels printen</li>
-                </ul>
-                <button>Contact opnemen</button>
-            </div>
-            <div class="plan">
-                <h3>Enterprise</h3>
-                <p>€29.99/maand</p>
-                <ul>
-                    <li>- Alle Premium functionaliteiten</li>
-                    <li>- Dagelijkse database backups</li>
-		    <li>- Cloud backups</li>
-		    <li>- Onbeperkte producten</li>
-                    <li>- Post-quantum security</li>
-		    <li>- Rapporten exporteren als PDF</li>
-		    <li>- Meldingen bij lage voorraad</li>
-                </ul>
-                <button>Contact opnemen</button>
-            </div>
-        </div>
-        <h2 class="versions" style="text-align: center;">Versies</h2>
-	<div class="version">
-            <h3>V16.0.14 (in ontwikkeling)</h3>
-            <p><strong>Geplande release datum:</strong> 15 december 2025</p>
-            <ul>
-                <li>- 2 Typfouten in de Producten pagina verbeterd</li>
-                <li>- Mogelijkheid om de kolom volgorde in te stellen</li>
-                <li>- Mogelijkheid om kolommen te verbergen</li>
-            </ul>
-        </div>
-	<div class="version">
-            <h3>V16.0.13</h3>
-            <p><strong>Release datum:</strong> 7 november 2025</p>
-            <ul>
-                <li>- De 'Terug' knop weg gehaald bij de 'Nieuw' pagina</li>
-                <li>- Instellingen pagina toegevoegd</li>
-                <li>- Globale instellingen gaan vanaf nu via de instellingen pagina, de per pagina instellingen blijven</li>
-		<li>- Het pijltje veranderd nu bij het inklappen en uitklappen van paginas</li>
-            </ul>
-	    <p><strong>Bekende bugs</strong></p>
-            <ul>
-                <li>- Het variabel veld 'Merk' kan tijdelijk niet worden aangepast</li>
-            </ul>
-        </div>
-        <div class="version">
-            <h3>V16.0.12</h3>
-            <p><strong>Release datum:</strong> 31 oktober 2025</p>
-            <ul>
-                <li>- Maat, Kleur, Zool, Advies prijs, Doelgroep en Merk zijn nu variabel en kunnen worden aangepast</li>
-            </ul>
-	    <p><strong>Bekende bugs</strong></p>
-            <ul>
-                <li>- Het wijzigen van variabel veld 9 (nu Merk) is alleen mogelijk via de 'Product details' en 'Omzet' paginas</li>
-            </ul>
-        </div>
-    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('scoreVal');
+        const livesEl = document.getElementById('livesVal');
+        const bestEl = document.getElementById('bestVal');
+        const msg = document.getElementById('msg');
+        const reasonEl = document.getElementById('reason');
+
+        // Layout settings
+        canvas.width = window.innerWidth * 0.95;
+        canvas.height = window.innerHeight * 0.85;
+
+        let gameActive = true;
+        let score = 0;
+        let lives = 3;
+        let highScore = localStorage.getItem('neonBestV3') || 0;
+        bestEl.innerText = highScore;
+
+        let player = { x: canvas.width/2, y: canvas.height/2, size: 18 };
+        let enemies = [];
+        let goals = []; 
+        let enemySpeed = 4;
+        let spawnRate = 500;
+        let lastSpawn = 0;
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            player.x = e.clientX - rect.left;
+            player.y = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('mousedown', () => {
+            if (!gameActive) restart();
+        });
+
+        function spawnEntity() {
+            const side = Math.floor(Math.random() * 4);
+            // Reduced probability for green particles (approx 12.5% chance)
+            const isGoal = Math.random() < 0.125; 
+            
+            let x, y, vx, vy;
+
+            // Spawn logic (Sides)
+            if (side === 0) { x = Math.random() * canvas.width; y = -30; vx = (Math.random()-0.5)*2; vy = enemySpeed; }
+            else if (side === 1) { x = canvas.width + 30; y = Math.random() * canvas.height; vx = -enemySpeed; vy = (Math.random()-0.5)*2; }
+            else if (side === 2) { x = Math.random() * canvas.width; y = canvas.height + 30; vx = (Math.random()-0.5)*2; vy = -enemySpeed; }
+            else { x = -30; y = Math.random() * canvas.height; vx = enemySpeed; vy = (Math.random()-0.5)*2; }
+
+            const entity = { 
+                x, y, vx, vy, 
+                size: isGoal ? 10 : 12 + Math.random()*12,
+                pulse: 0 
+            };
+            
+            if (isGoal) goals.push(entity);
+            else enemies.push(entity);
+        }
+
+        function update(time) {
+            if (!gameActive) return;
+
+            if (time - lastSpawn > spawnRate) {
+                spawnEntity();
+                lastSpawn = time;
+                enemySpeed += 0.015; // Slow scaling
+                spawnRate = Math.max(80, spawnRate - 1);
+            }
+
+            // Update Enemies (Red) - Instant Death
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                let e = enemies[i];
+                e.x += e.vx; e.y += e.vy;
+
+                if (Math.hypot(e.x - player.x, e.y - player.y) < e.size + 8) {
+                    endGame("SYSTEM CRASH: RED COLLISION");
+                }
+                if (e.x < -150 || e.x > canvas.width + 150 || e.y < -150 || e.y > canvas.height + 150) {
+                    enemies.splice(i, 1);
+                    score += 5;
+                }
+            }
+
+            // Update Goals (Green) - Life Penalty if missed
+            for (let i = goals.length - 1; i >= 0; i--) {
+                let g = goals[i];
+                g.x += g.vx * 0.7; g.y += g.vy * 0.7; // Slightly slower
+                g.pulse += 0.1;
+
+                // Hit Detection (Player takes green)
+                if (Math.hypot(g.x - player.x, g.y - player.y) < g.size + 15) {
+                    goals.splice(i, 1);
+                    score += 100;
+                } 
+                // Boundary Detection (Player misses green)
+                else if (g.x < -60 || g.x > canvas.width + 60 || g.y < -60 || g.y > canvas.height + 60) {
+                    goals.splice(i, 1);
+                    lives--;
+                    livesEl.innerText = lives;
+                    if (lives <= 0) endGame("CRITICAL FAILURE: ENERGY DEPLETED");
+                }
+            }
+
+            scoreEl.innerText = score;
+            draw();
+            requestAnimationFrame(update);
+        }
+
+        function draw() {
+            // Motion blur effect
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.25)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Player (Cyan Glow)
+            ctx.shadowBlur = 20; 
+            ctx.shadowColor = '#00f2ff';
+            ctx.fillStyle = '#00f2ff';
+            ctx.fillRect(player.x - 10, player.y - 10, 20, 20);
+
+            // Draw Enemies (Red Circles)
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#ff0055';
+            ctx.fillStyle = '#ff0055';
+            enemies.forEach(e => {
+                ctx.beginPath();
+                ctx.arc(e.x, e.y, e.size, 0, Math.PI*2);
+                ctx.fill();
+            });
+
+            // Draw Goals (Green Diamonds)
+            ctx.shadowColor = '#00ff88';
+            ctx.fillStyle = '#00ff88';
+            goals.forEach(g => {
+                let s = g.size + Math.sin(g.pulse) * 3; // Pulsing effect
+                ctx.shadowBlur = 15 + Math.sin(g.pulse) * 5;
+                ctx.save();
+                ctx.translate(g.x, g.y);
+                ctx.rotate(Math.PI / 4);
+                ctx.fillRect(-s, -s, s*2, s*2);
+                ctx.restore();
+            });
+            ctx.shadowBlur = 0;
+        }
+
+        function endGame(reason) {
+            gameActive = false;
+            reasonEl.innerText = reason;
+            msg.style.display = 'block';
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('neonBestV3', highScore);
+                bestEl.innerText = highScore;
+            }
+        }
+
+        function restart() {
+            score = 0; lives = 3; enemySpeed = 4; spawnRate = 500;
+            enemies = []; goals = [];
+            livesEl.innerText = lives;
+            msg.style.display = 'none';
+            gameActive = true;
+            requestAnimationFrame(update);
+        }
+
+        requestAnimationFrame(update);
+    </script>
 </body>
 </html>
